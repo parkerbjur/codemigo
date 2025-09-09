@@ -1,13 +1,49 @@
 import React from 'react';
-import './App.css';
 import { ArticleRenderer, PerseusDependencies, PerseusDependenciesV2, Dependencies, PerseusI18nContext } from "@khanacademy/perseus"
 import { PerseusRenderer } from '@khanacademy/perseus-core'
 import { mockStrings } from '@khanacademy/perseus/strings';
 
 const sampleArticle: PerseusRenderer = {
-  "content": "Hello World!",
+  "content": "[[☃ image 2]]\n\n**Part A:** Return to the main characters from your three favorite films. \n\n- What was one important choice they had to make where the stakes were **high**?\n\n-  What were the **stakes**?\n\n- Can you identify them as internal, external or philosophical?\n\n**Part B:** Think about a difficult choice you had to make in your own life.  What was at stake? \n\n**Part C:** Return to one of the obstacles your character might face from the previous exercise. Now think of the **choice** this obstacle forces them to make. Answer the following:\n\n- What are the possible stakes of this choice?\n\n- Can you come up with an internal, external or philosophical stake which applies to this choice? \n",
   "images": {},
-  "widgets": {}
+  "widgets": {
+    "image 2": {
+      "type": "image",
+      "alignment": "block",
+      "static": false,
+      "graded": true,
+      "options": {
+        "static": false,
+        "title": "",
+        "range": [
+          [
+            0,
+            10
+          ],
+          [
+            0,
+            10
+          ]
+        ],
+        "box": [
+          1258,
+          703
+        ],
+        "backgroundImage": {
+          "url": "https://ka-perseus-images.s3.amazonaws.com/b08029bc1786fbe54468a2ddc96aaa20be7a663a.png",
+          "width": 1258,
+          "height": 703
+        },
+        "labels": [],
+        "alt": "A scene from Pixar's film \"Toy Story 3\" where the characters are swimming in a sea of trash and look very afraid.",
+        "caption": "A scene from Pixar's film \"Toy Story 3\" where the characters are swimming in a sea of trash and look very afraid.\""
+      },
+      "version": {
+        "major": 0,
+        "minor": 0
+      }
+    }
+  }
 }
 
 export const testDependencies: PerseusDependencies = {
