@@ -17,11 +17,19 @@ const ChatInput: React.FC = () => {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <View style={{flexDirection: "row", gap: sizing.size_120}} >
       <TextField
         value={message}
         onChange={(value: string) => setMessage(value)}
+        onKeyPress={handleKeyPress}
         placeholder="Ask me to create a Perseus article..."
         disabled={isLoading}
       />
