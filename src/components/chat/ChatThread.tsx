@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from "@khanacademy/wonder-blocks-core";
-import { spacing } from "@khanacademy/wonder-blocks-tokens";
+import { sizing } from "@khanacademy/wonder-blocks-tokens";
 import { ChatMessage } from "./ChatMessage";
 import { useChatContext } from '../../contexts/ChatContext';
 
@@ -11,7 +11,7 @@ const ChatThread: React.FC = () => {
       <View
         style={{
           minHeight: "min-content",
-          gap: spacing.medium_16
+          gap: sizing.size_120
         }}
       >
         {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View } from "@khanacademy/wonder-blocks-core"
 import { TextField } from "@khanacademy/wonder-blocks-form"
 import Button from "@khanacademy/wonder-blocks-button";
+import { sizing } from "@khanacademy/wonder-blocks-tokens"
 import { useChatContext } from '../../contexts/ChatContext';
 
 const ChatInput: React.FC = () => {
@@ -17,7 +18,7 @@ const ChatInput: React.FC = () => {
   };
 
   return (
-    <View style={{flexDirection: "row"}} >
+    <View style={{flexDirection: "row", gap: sizing.size_120}} >
       <TextField
         value={message}
         onChange={(value: string) => setMessage(value)}

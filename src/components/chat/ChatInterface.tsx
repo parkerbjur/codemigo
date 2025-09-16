@@ -8,12 +8,12 @@ interface ChatInterfaceProps {
   style?: React.CSSProperties;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = () => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ style }) => {
   return (
     <ChatProvider>
       <View style={{ 
-        height: '100vh', 
-        width: '100vw',
+        height: '100%', 
+        ...style
       }}>
         <View style={{
           flex: 1,

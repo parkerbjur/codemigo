@@ -1,4 +1,6 @@
 import React from 'react';
+import { View } from "@khanacademy/wonder-blocks-core"
+import { sizing } from "@khanacademy/wonder-blocks-tokens"
 import { PerseusDependencies, PerseusDependenciesV2, Dependencies } from "@khanacademy/perseus"
 import ChatInterface from './components/chat/ChatInterface';
 
@@ -100,7 +102,15 @@ Dependencies.setDependencies(testDependencies)
 
 function App() {
   return (
-    <ChatInterface style={{ height: '100vh', width: '100vw' }}/>
+    <View style={{
+        height: '100vh',
+        maxWidth: "60em",
+        margin: '0 auto',
+        padding: sizing.size_120,
+        gap: sizing.size_120
+    }}>
+        <ChatInterface />
+    </View>
   );
 }
 
