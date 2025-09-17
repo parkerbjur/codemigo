@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "server/article_writer/example_article.js"  ]
 }

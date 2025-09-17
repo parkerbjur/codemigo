@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { useChat } from '@ai-sdk/react';
 import { ChatMessageProps } from '../components/chat/ChatMessage';
 
 interface ChatContextType {
   messages: ChatMessageProps[];
   isLoading: boolean;
-  sendMessage: (content: string) => Promise<void>;
+  sendMessage: (content: string) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -22,37 +23,18 @@ interface ChatProviderProps {
 }
 
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
-  const [messages, setMessages] = useState<ChatMessageProps[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [messageCounter, setMessageCounter] = useState(0);
+  const { messages: aiMessages, status, sendMessage: aiSendMessage } = useChat();
 
-  const sendMessage = async (content: string) => {
-    setMessageCounter(prev => prev + 1);
-    const userMessageId = messageCounter + 1;
-    
-    const userMessage: ChatMessageProps = {
-      id: userMessageId.toString(),
-      type: 'user',
-      content,
-    };
+  const messages: ChatMessageProps[] = aiMessages.map((msg: any, index) => ({
+    id: index.toString(),
+    type: msg.role === 'user' ? 'user' : 'agent',
+    content: msg.content || '',
+  }));
 
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
+  const isLoading = status === 'streaming' || status === 'submitted';
 
-    try {
-      setMessageCounter(prev => prev + 1);
-      const agentMessageId = messageCounter + 2;
-      
-      const agentMessage: ChatMessageProps = {
-        id: agentMessageId.toString(),
-        type: 'agent',
-        content: 'Generated article',
-      };
-
-      setMessages(prev => [...prev, agentMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+  const sendMessage = (content: string) => {
+    aiSendMessage({ role: 'user', content } as any);
   };
 
   const value: ChatContextType = {
