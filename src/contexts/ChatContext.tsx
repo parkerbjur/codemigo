@@ -1,5 +1,7 @@
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { ChatMessageProps } from '../components/chat/ChatMessage';
+import { PerseusRenderer } from '@khanacademy/perseus-core'
+import { ArticleRenderer, PerseusDependenciesV2 } from '@khanacademy/perseus';
 
 interface ChatContextType {
   messages: ChatMessageProps[];
@@ -20,6 +22,20 @@ export const useChatContext = () => {
 interface ChatProviderProps {
   children: ReactNode;
 }
+
+export const testDependenciesV2: PerseusDependenciesV2 = {
+    analytics: {
+        onAnalyticsEvent: async () => {},
+    },
+    useVideo: () => {
+        return {
+            status: "success",
+            data: {
+                video: null,
+            },
+        };
+    },
+};
 
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [messages, setMessages] = useState<ChatMessageProps[]>([])
@@ -48,10 +64,17 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       
       const data = await response.json();
       console.log(data[0])
+      const generatedArticle: PerseusRenderer = {
+        content: data[0].text,
+        images: {},
+        widgets: {}
+      }
       
       setMessages(prev => [...prev, {
         type: 'agent',
-        content: data[0].text || 'No response received',
+        content: (
+          <ArticleRenderer json={generatedArticle} dependencies={testDependenciesV2}/>
+        ),
         id: "0"
       }]);
     } catch (error) {

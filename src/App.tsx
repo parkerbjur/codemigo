@@ -1,8 +1,9 @@
 import React from 'react';
 import { View } from "@khanacademy/wonder-blocks-core"
 import { sizing } from "@khanacademy/wonder-blocks-tokens"
-import { PerseusDependencies, PerseusDependenciesV2, Dependencies } from "@khanacademy/perseus"
+import { PerseusDependencies, Dependencies, PerseusI18nContext } from "@khanacademy/perseus"
 import ChatInterface from './components/chat/ChatInterface';
+import { mockStrings } from '@khanacademy/perseus/strings';
 
 export const testDependencies: PerseusDependencies = {
     JIPT: {
@@ -84,20 +85,6 @@ export const testDependencies: PerseusDependencies = {
     },
 };
 
-export const testDependenciesV2: PerseusDependenciesV2 = {
-    analytics: {
-        onAnalyticsEvent: async () => {},
-    },
-    useVideo: () => {
-        return {
-            status: "success",
-            data: {
-                video: null,
-            },
-        };
-    },
-};
-
 Dependencies.setDependencies(testDependencies)
 
 function App() {
@@ -109,7 +96,9 @@ function App() {
         padding: sizing.size_120,
         gap: sizing.size_120
     }}>
-        <ChatInterface />
+        <PerseusI18nContext.Provider value={{strings: mockStrings, locale: "en"}}>
+            <ChatInterface />
+        </PerseusI18nContext.Provider>
     </View>
   );
 }
