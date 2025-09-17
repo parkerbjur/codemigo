@@ -1,5 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react';
-import { useChat } from '@ai-sdk/react';
+import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { ChatMessageProps } from '../components/chat/ChatMessage';
 
 interface ChatContextType {
@@ -23,18 +22,43 @@ interface ChatProviderProps {
 }
 
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
-  const { messages: aiMessages, status, sendMessage: aiSendMessage } = useChat();
+  const [messages, setMessages] = useState<ChatMessageProps[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
-  const messages: ChatMessageProps[] = aiMessages.map((msg: any, index) => ({
-    id: index.toString(),
-    type: msg.role === 'user' ? 'user' : 'agent',
-    content: msg.content || '',
-  }));
-
-  const isLoading = status === 'streaming' || status === 'submitted';
-
-  const sendMessage = (content: string) => {
-    aiSendMessage({ role: 'user', content } as any);
+  const sendMessage = async (content: string) => {
+    setIsLoading(true);
+    setMessages(prev => [...prev, {
+      id: "0",
+      type: 'user',
+      content: content,
+    }]);
+    
+    try {
+      const response = await fetch('/api/article', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: content }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate article');
+      }
+      
+      const data = await response.json();
+      console.log(data[0])
+      
+      setMessages(prev => [...prev, {
+        type: 'agent',
+        content: data[0].text || 'No response received',
+        id: "0"
+      }]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const value: ChatContextType = {
