@@ -7,7 +7,9 @@ import ChatInterface from './components/chat/ChatInterface';
 import ArticleList from './components/ArticleList';
 import ArticleViewer from './components/ArticleViewer';
 import { mockStrings } from '@khanacademy/perseus/strings';
+import { MathInputI18nContext } from "@khanacademy/math-input"
 import { TestMathjax } from './mathjax';
+import { mockStrings as mathMockStrings } from '@khanacademy/math-input/strings';
 
 export const testDependencies: PerseusDependencies = {
     JIPT: {
@@ -93,31 +95,33 @@ function App() {
   return (
     <Router>
       <PerseusI18nContext.Provider value={{strings: mockStrings, locale: "en"}}>
-        <View style={{flexDirection: "row"}}>
-          <View style={{
-              margin: sizing.size_120,
-              marginLeft: 0,
-              padding: sizing.size_120,
-              borderRightWidth: border.width.thin,
-              borderRightColor: semanticColor.core.border.neutral.subtle,
-              minWidth: "260px"
-          }}>
-              <ArticleList />
-          </View>
-          <View style={{
-              height: '100vh',
-              maxWidth: "60em",
-              padding: sizing.size_120,
-              gap: sizing.size_120,
-              flex: 1,
-              margin: '0 auto',
-          }}>
-              <Switch>
-                <Route exact path="/" component={ChatInterface} />
-                <Route path="/article/:id" component={ArticleViewer} />
-              </Switch>
-          </View>
-        </View>
+        <MathInputI18nContext.Provider value={{strings: mathMockStrings, locale: "en"}}>
+            <View style={{flexDirection: "row"}}>
+                <View style={{
+                    margin: sizing.size_120,
+                    marginLeft: 0,
+                    padding: sizing.size_120,
+                    borderRightWidth: border.width.thin,
+                    borderRightColor: semanticColor.core.border.neutral.subtle,
+                    minWidth: "260px"
+                }}>
+                    <ArticleList />
+                </View>
+                <View style={{
+                    height: '100vh',
+                    maxWidth: "60em",
+                    padding: sizing.size_120,
+                    gap: sizing.size_120,
+                    flex: 1,
+                    margin: '0 auto',
+                }}>
+                    <Switch>
+                        <Route exact path="/" component={ChatInterface} />
+                        <Route path="/article/:id" component={ArticleViewer} />
+                    </Switch>
+                </View>
+            </View>
+        </MathInputI18nContext.Provider>
       </PerseusI18nContext.Provider>
     </Router>
   );

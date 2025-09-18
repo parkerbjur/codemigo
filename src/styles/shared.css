@@ -24,3 +24,5 @@ for the Wonder Blocks components to visually look correct. */
 
 /* Font styles for Classroom */
 @import "./thunderblocks.css";
+
+@import "./mathquill.css"
