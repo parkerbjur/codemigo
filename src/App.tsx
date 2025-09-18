@@ -7,6 +7,7 @@ import ChatInterface from './components/chat/ChatInterface';
 import ArticleList from './components/ArticleList';
 import ArticleViewer from './components/ArticleViewer';
 import { mockStrings } from '@khanacademy/perseus/strings';
+import { TestMathjax } from './mathjax';
 
 export const testDependencies: PerseusDependencies = {
     JIPT: {
@@ -23,9 +24,7 @@ export const testDependencies: PerseusDependencies = {
         removeComponentAtIndex: () => {},
     },
 
-    TeX: ({children}: {children: React.ReactNode}) => {
-        return <span className="mock-TeX">{children}</span>;
-    },
+    TeX: TestMathjax,
 
     // @ts-expect-error - TS2322 - Type '(str?: string | null | undefined) => string' is not assignable to type 'StaticUrlFn'.
     staticUrl: (str?: string | null) => {

@@ -5,6 +5,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.17",
     "@ai-sdk/openai": "^2.0.32",
+    "@khanacademy/mathjax-renderer": "^3.0.0",
     "@khanacademy/perseus": "^68.0.2",
     "@khanacademy/wonder-blocks-button": "^11.2.2",
     "@khanacademy/wonder-blocks-color": "^3.0.0",
