@@ -1,8 +1,11 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { View } from "@khanacademy/wonder-blocks-core"
-import { sizing } from "@khanacademy/wonder-blocks-tokens"
+import { sizing, border, semanticColor } from "@khanacademy/wonder-blocks-tokens"
 import { PerseusDependencies, Dependencies, PerseusI18nContext } from "@khanacademy/perseus"
 import ChatInterface from './components/chat/ChatInterface';
+import ArticleList from './components/ArticleList';
+import ArticleViewer from './components/ArticleViewer';
 import { mockStrings } from '@khanacademy/perseus/strings';
 
 export const testDependencies: PerseusDependencies = {
@@ -89,17 +92,35 @@ Dependencies.setDependencies(testDependencies)
 
 function App() {
   return (
-    <View style={{
-        height: '100vh',
-        maxWidth: "60em",
-        margin: '0 auto',
-        padding: sizing.size_120,
-        gap: sizing.size_120
-    }}>
-        <PerseusI18nContext.Provider value={{strings: mockStrings, locale: "en"}}>
-            <ChatInterface />
-        </PerseusI18nContext.Provider>
-    </View>
+    <Router>
+      <PerseusI18nContext.Provider value={{strings: mockStrings, locale: "en"}}>
+        <View style={{flexDirection: "row"}}>
+          <View style={{
+              margin: sizing.size_120,
+              marginLeft: 0,
+              padding: sizing.size_120,
+              borderRightWidth: border.width.thin,
+              borderRightColor: semanticColor.core.border.neutral.subtle,
+              minWidth: "260px"
+          }}>
+              <ArticleList />
+          </View>
+          <View style={{
+              height: '100vh',
+              maxWidth: "60em",
+              padding: sizing.size_120,
+              gap: sizing.size_120,
+              flex: 1,
+              margin: '0 auto',
+          }}>
+              <Switch>
+                <Route exact path="/" component={ChatInterface} />
+                <Route path="/article/:id" component={ArticleViewer} />
+              </Switch>
+          </View>
+        </View>
+      </PerseusI18nContext.Provider>
+    </Router>
   );
 }
 

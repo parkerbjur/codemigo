@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { ArticleProvider } from './contexts/ArticleContext';
 import reportWebVitals from './reportWebVitals';
 import "./styles/shared.css"
 import '@khanacademy/perseus/styles.css'
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ArticleProvider>
+      <App />
+    </ArticleProvider>
   </React.StrictMode>
 );
 
