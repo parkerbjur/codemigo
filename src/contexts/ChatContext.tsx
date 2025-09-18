@@ -50,7 +50,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }]);
     
     try {
-      const response = await fetch('/api/article', {
+      const response = await fetch('http://127.0.0.1:3001/api/article', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
