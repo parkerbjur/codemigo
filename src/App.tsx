@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import { View } from "@khanacademy/wonder-blocks-core"
+import { Spring } from "@khanacademy/wonder-blocks-layout"
 import { sizing, border, semanticColor } from "@khanacademy/wonder-blocks-tokens"
 import { PerseusDependencies, Dependencies, PerseusI18nContext } from "@khanacademy/perseus"
 import ChatInterface from './components/chat/ChatInterface';
@@ -10,6 +11,8 @@ import { mockStrings } from '@khanacademy/perseus/strings';
 import { MathInputI18nContext } from "@khanacademy/math-input"
 import { TestMathjax } from './mathjax';
 import { mockStrings as mathMockStrings } from '@khanacademy/math-input/strings';
+import Button from '@khanacademy/wonder-blocks-button';
+import filePlus from "@phosphor-icons/core/regular/file-plus.svg";
 
 export const testDependencies: PerseusDependencies = {
     JIPT: {
@@ -92,39 +95,51 @@ export const testDependencies: PerseusDependencies = {
 Dependencies.setDependencies(testDependencies)
 
 function App() {
-  return (
-    <Router>
-      <PerseusI18nContext.Provider value={{strings: mockStrings, locale: "en"}}>
-        <MathInputI18nContext.Provider value={{strings: mathMockStrings, locale: "en"}}>
-            <View style={{flexDirection: "row"}}>
-                <View style={{
-                    margin: sizing.size_120,
-                    marginLeft: 0,
-                    padding: sizing.size_120,
-                    borderRightWidth: border.width.thin,
-                    borderRightColor: semanticColor.core.border.neutral.subtle,
-                    minWidth: "260px"
-                }}>
-                    <ArticleList />
+    const history = useHistory()
+    return (
+        <PerseusI18nContext.Provider value={{ strings: mockStrings, locale: "en" }}>
+            <MathInputI18nContext.Provider value={{ strings: mathMockStrings, locale: "en" }}>
+                <View style={{ flexDirection: "row", height: '100vh' }}>
+                    <View style={{
+                        padding: sizing.size_120,
+                        gap: sizing.size_120,
+                        borderRightWidth: border.width.thin,
+                        borderRightColor: semanticColor.core.border.neutral.subtle,
+                        minWidth: "260px"
+                    }}>
+                        <ArticleList />
+                        <Spring/>
+                        <Button
+                            startIcon={filePlus}
+                            onClick={() => { history.push("/") }}
+                        >
+                            New article
+                        </Button>
+                    </View>
+                    <View style={{
+                        background: semanticColor.core.background.base.subtle,
+                        flex: 1,
+                        overflow: 'scroll',
+                        overflowX: 'hidden',
+                    }}>
+                        <View style={{
+                            height: '100vh',
+                            maxWidth: '60em',
+                            width: "100%",
+                            padding: `${"0", sizing.size_120}`,
+                            gap: sizing.size_120,
+                            margin: '0 auto',
+                        }}>
+                            <Switch>
+                                <Route exact path="/" component={ChatInterface} />
+                                <Route path="/article/:id" component={ArticleViewer} />
+                            </Switch>
+                        </View>
+                    </View>
                 </View>
-                <View style={{
-                    height: '100vh',
-                    maxWidth: "60em",
-                    padding: sizing.size_120,
-                    gap: sizing.size_120,
-                    flex: 1,
-                    margin: '0 auto',
-                }}>
-                    <Switch>
-                        <Route exact path="/" component={ChatInterface} />
-                        <Route path="/article/:id" component={ArticleViewer} />
-                    </Switch>
-                </View>
-            </View>
-        </MathInputI18nContext.Provider>
-      </PerseusI18nContext.Provider>
-    </Router>
-  );
+            </MathInputI18nContext.Provider>
+        </PerseusI18nContext.Provider>
+    );
 }
 
 export default App;

@@ -5,6 +5,7 @@ import { ArticleProvider } from './contexts/ArticleContext';
 import reportWebVitals from './reportWebVitals';
 import "./styles/shared.css"
 import '@khanacademy/perseus/styles.css'
+import { BrowserRouter } from 'react-router-dom' 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ArticleProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ArticleProvider>
   </React.StrictMode>
 );
