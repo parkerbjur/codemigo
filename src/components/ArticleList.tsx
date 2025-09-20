@@ -4,6 +4,7 @@ import { View } from "@khanacademy/wonder-blocks-core";
 import { LabelLarge, Body } from "@khanacademy/wonder-blocks-typography";
 import { CompactCell } from "@khanacademy/wonder-blocks-cell"
 import { useArticleContext } from '../contexts/ArticleContext';
+import { PerseusArticle, PerseusRenderer } from "@khanacademy/perseus-core"
 
 const ArticleList: React.FC = () => {
   const { articles } = useArticleContext();
@@ -22,14 +23,26 @@ const ArticleList: React.FC = () => {
         <Body>No articles yet</Body>
       ) : (
         <View>
-          {articles.map((article, index) => (
-            <CompactCell
-              active={index == id}
-              title={index.toString()}
-              key={index}
-              onClick={() => history.push(`/article/${index}`)}
-            />
-          ))}
+          {articles.map((article, index) => {
+            let article_section: PerseusRenderer = Array.isArray(article) ? (
+              article[0]
+            ) : ( article )
+            const r = /^#+\s*(.+)/g // Extract the first heading from the markdown
+            const matches = r.exec(article_section.content)
+            let heading = matches?.[1] // group 1 contains the heading text
+            if (!heading) {
+              heading = "Article"
+            }
+          
+            return (
+              <CompactCell
+                active={index == id}
+                title={heading}
+                key={index}
+                onClick={() => history.push(`/article/${index}`)}
+              />
+            )
+          })}
         </View>
       )}
     </View>
