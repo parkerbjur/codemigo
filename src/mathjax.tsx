@@ -22,7 +22,6 @@ type Props = {
 };
 
 export function TestMathjax({children: tex, onRender}: Props) {
-    console.log(tex)
     const ref = React.useRef<HTMLSpanElement>(null);
     const {domElement, addLabel} = React.useMemo(
         () => renderer.render(tex),

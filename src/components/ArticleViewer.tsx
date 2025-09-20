@@ -8,14 +8,18 @@ import { testDependenciesV2 } from '../contexts/ChatContext';
 const ArticleViewer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { articles, loading } = useArticleContext();
-  const article = articles[parseInt(id, 10)];
+  const article = articles.find(article => article.id == id)
+
+  if (!article) {
+    return <div></div>
+  }
   
   if (loading) {
     return <CircularSpinner/>
   }
 
   return (
-    <ArticleRenderer json={article} dependencies={testDependenciesV2}></ArticleRenderer>
+    <ArticleRenderer json={article.article} dependencies={testDependenciesV2}></ArticleRenderer>
   );
 };
 

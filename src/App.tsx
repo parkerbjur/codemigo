@@ -133,7 +133,7 @@ function App() {
                         }}>
                             <Switch>
                                 <Route exact path="/create" component={ArticleCreator} />
-                                <Route path="/article/:id" component={ArticleViewer} />
+                                <Route path="/articles/:id" component={ArticleViewer} />
                             </Switch>
                         </View>
                     </View>

@@ -1,10 +1,15 @@
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { PerseusArticle } from '@khanacademy/perseus-core';
+import { widgets } from '@khanacademy/perseus';
 
+interface Article {
+  id: string,
+  article: PerseusArticle
+}
 
 interface ArticleContextType {
-  articles: PerseusArticle[];
-  createArticle: (prompt: string) => Promise<PerseusArticle>;
+  articles: Article[];
+  createArticle: (prompt: string) => Promise<Article>;
   loading: boolean;
   error: string | null;
 }
@@ -26,7 +31,7 @@ interface ArticleProviderProps {
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
 export const ArticleProvider: React.FC<ArticleProviderProps> = ({ children }) => {
-  const [articles, setArticles] = useState<PerseusArticle[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,7 +61,7 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({ children }) =>
     fetchArticles();
   }, []);
 
-  const createArticle = async (content: string): Promise<PerseusArticle> => {
+  const createArticle = async (content: string): Promise<Article> => {
     try {
       const response = await fetch('http://127.0.0.1:3001/api/article', {
         method: 'POST',
@@ -71,15 +76,10 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({ children }) =>
       }
       
       const data = await response.json();
-      console.log(data[0])
-      const generatedArticle: PerseusArticle = {
-        content: data[0].text,
-        images: {},
-        widgets: {}
-      }
+      setArticles(prev => [...prev, data])
       setError(null);
-      return generatedArticle;
-    } catch (err) {
+      return data;
+    } catch (err: any) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create article';
       setError(errorMessage);
       console.error('Error creating article:', err);

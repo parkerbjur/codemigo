@@ -54,15 +54,20 @@ app.post('/api/article', async (req, res) => {
     });
 
     console.log(result)
+    const article = {
+      id: crypto.randomUUID(),
+      article: {
+        content: result.content[0].text,
+        images: {},
+        widgets: {}
+      }
+    }
 
-    res.send(result.content)
+    res.json(article)
     
     const articles = readArticles()
-    articles.append({
-      content: result.content[0].text,
-      images: {},
-      widgets: {}
-    })
+    console.log(articles)
+    articles.push(article)
     writeArticles(articles)
     
   } catch (error) {

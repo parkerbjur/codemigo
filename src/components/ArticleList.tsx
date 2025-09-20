@@ -1,18 +1,36 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams, matchPath } from 'react-router-dom';
 import { View } from "@khanacademy/wonder-blocks-core";
 import { LabelLarge, Body } from "@khanacademy/wonder-blocks-typography";
 import { CompactCell } from "@khanacademy/wonder-blocks-cell"
 import { useArticleContext } from '../contexts/ArticleContext';
 import { PerseusArticle, PerseusRenderer } from "@khanacademy/perseus-core"
 
+const extractHeading = (article: PerseusArticle) => {
+    const articleContent = article
+    let article_section: PerseusRenderer = Array.isArray(articleContent) ? (
+      articleContent[0]
+    ) : ( articleContent )
+    const r = /^#+\s*(.+)/g // Extract the first heading from the markdown
+    const matches = r.exec(article_section.content)
+    let heading = matches?.[1] // group 1 contains the heading text
+    if (!heading) {
+      throw "No Heading"
+    }
+    return heading
+}
+
 const ArticleList: React.FC = () => {
   const { articles } = useArticleContext();
-  const location = useLocation();
   const history = useHistory();
-  // Extract id from pathname manually
-  const match = location.pathname.match(/^\/article\/(\d+)$/);
-  const id = match ? parseInt(match[1]) : undefined;
+  const location = useLocation();
+
+  const match = matchPath(
+    location.pathname,
+    "/articles/:id",
+  ) 
+  // @ts-ignore ts complains that id doesnt exist on {}
+  const id = match?.params?.id
 
   return (
     <View>
@@ -24,22 +42,15 @@ const ArticleList: React.FC = () => {
       ) : (
         <View>
           {articles.map((article, index) => {
-            let article_section: PerseusRenderer = Array.isArray(article) ? (
-              article[0]
-            ) : ( article )
-            const r = /^#+\s*(.+)/g // Extract the first heading from the markdown
-            const matches = r.exec(article_section.content)
-            let heading = matches?.[1] // group 1 contains the heading text
-            if (!heading) {
-              heading = "Article"
-            }
-          
+            let heading = "Article"
+            try { heading = extractHeading(article.article) }
+            catch {}
             return (
               <CompactCell
-                active={index == id}
+                active={article.id == id}
                 title={heading}
-                key={index}
-                onClick={() => history.push(`/article/${index}`)}
+                key={article.id}
+                onClick={() => history.push(`/articles/${article.id}`)}
               />
             )
           })}
