@@ -3,16 +3,19 @@ import { View } from "@khanacademy/wonder-blocks-core"
 import { TextField } from "@khanacademy/wonder-blocks-form"
 import Button from "@khanacademy/wonder-blocks-button";
 import { sizing } from "@khanacademy/wonder-blocks-tokens"
-import { useChatContext } from '../../contexts/ChatContext';
 
-const ChatInput: React.FC = () => {
-  const { sendMessage, isLoading } = useChatContext();
+interface ChatInputProps {
+  onSend: (message: string) => void
+  disabled?: boolean
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [message, setMessage] = useState('');
 
   const handleSend = () => {
     const trimmedMessage = message.trim();
-    if (trimmedMessage && !isLoading) {
-      sendMessage(trimmedMessage);
+    if (trimmedMessage && !disabled) {
+      onSend(trimmedMessage);
       setMessage('');
     }
   };
@@ -20,7 +23,6 @@ const ChatInput: React.FC = () => {
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleSend();
     }
   };
 
@@ -31,11 +33,11 @@ const ChatInput: React.FC = () => {
         onChange={(value: string) => setMessage(value)}
         onKeyPress={handleKeyPress}
         placeholder="Ask me to create a Perseus article..."
-        disabled={isLoading}
+        disabled={disabled}
       />
       <Button
         onClick={handleSend}
-        disabled={isLoading || !message.trim()}
+        disabled={disabled || !message.trim()}
       >
         Send
       </Button>

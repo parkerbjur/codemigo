@@ -7,6 +7,7 @@ import { PerseusDependencies, Dependencies, PerseusI18nContext } from "@khanacad
 import ChatInterface from './components/chat/ChatInterface';
 import ArticleList from './components/ArticleList';
 import ArticleViewer from './components/ArticleViewer';
+import ArticleCreator from './components/ArticleCreator';
 import { mockStrings } from '@khanacademy/perseus/strings';
 import { MathInputI18nContext } from "@khanacademy/math-input"
 import { TestMathjax } from './mathjax';
@@ -111,7 +112,7 @@ function App() {
                         <Spring/>
                         <Button
                             startIcon={filePlus}
-                            onClick={() => { history.push("/") }}
+                            onClick={() => { history.push("/create") }}
                         >
                             New article
                         </Button>
@@ -126,12 +127,12 @@ function App() {
                             height: '100vh',
                             maxWidth: '60em',
                             width: "100%",
-                            padding: `${"0", sizing.size_120}`,
+                            padding: `${sizing.size_120}`,
                             gap: sizing.size_120,
                             margin: '0 auto',
                         }}>
                             <Switch>
-                                <Route exact path="/" component={ChatInterface} />
+                                <Route exact path="/create" component={ArticleCreator} />
                                 <Route path="/article/:id" component={ArticleViewer} />
                             </Switch>
                         </View>

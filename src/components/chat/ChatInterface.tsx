@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from "@khanacademy/wonder-blocks-core";
 import { ChatProvider } from '../../contexts/ChatContext';
+import { useChatContext } from '../../contexts/ChatContext';
 import ChatInput from './ChatInput';
 import ChatThread from './ChatThread';
 
@@ -9,6 +10,8 @@ interface ChatInterfaceProps {
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ style }) => {
+  const { sendMessage, isLoading } = useChatContext();
+
   return (
     <ChatProvider>
       <View style={{ 
@@ -21,7 +24,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ style }) => {
         }}>
           <ChatThread />
         </View>
-        <ChatInput />
+        <ChatInput onSend={sendMessage} disabled={isLoading}/>
       </View>
     </ChatProvider>
   );
